@@ -55,7 +55,7 @@ void gotoMenu_manager(char* id, int level)
 		case 3: gotoRecharge(); break;
 		case 4: gotoPayBack(); break;
 		case 5:  gotoCheckAllCards(); break;
-		case 6: gotoCreateCard(); break;
+		case 6: gotoChangeStatus(); break;
 		case 7: gotoCreateCard(); break;
 		case 8: gotoCreateCard(); break;
 		case 9: gotoCreateCard(); break;
@@ -403,5 +403,145 @@ void gotoCheckAllCards() {
 
 //修改卡状态
 void gotoChangeStatus() {
-    
+    char cardid[20], pas[20];
+    int iflegal = 0;
+    int  status;
+    printf("—————修—改—卡—状—态—————\n");
+    printf("修改须知：\n");
+    printf("1、精确输入修改卡号\n");
+    printf("2、搜索到修改卡后，输入期望修改状态代码，输入管理员密码完成修改\n");
+    printf("3、卡状态由“已上机”修改至其他状态的时候，会先行结算，余额不足结算会提示，可以选择清空余额并进行修改或取消修改状态\n");
+    printf("4、卡状态修改至“已注销”的时候，若还有余额会进行提示，可以选择清空余额并继续或取消修改状态\n");
+    printf("5、若取消修改状态，请在卡号或者管理员密码输入界面输入“\\”或期望修改代码处填“-1”\n");
+    printf("———————————————————\n");
+    printf("请精确输入修改卡号：");
+    do {
+	  iflegal = 0;
+	  scanf("%s", cardid);
+	  if (cardid[1] == 0 && cardid[0] == 92) {
+		printf("已取消修改\n");
+		system("pause");
+		system("cls");
+		return;
+	  }
+	  if (check_card(cardid) == NULL) {
+		printf("查无此卡！请重新输入：");
+		iflegal = 0;
+	  }
+	  else {
+		printf("查询到如下信息：\n\n%-18s%-8s%-10s%-10s%-15s%-20s\n",
+		    "卡号", "余额", "当前状态", "使用次数", "总使用金额", "上次上/下机时间");
+		printf("———————————————————————————————————————————————————\n");
+		char timea[20];
+		time_ttostring(timea, check_card(cardid)->lastTimeOfUse);
+		printf("%-18s%-8.2f%-10s%-10d%-15.2f%-20s\n",
+		    check_card(cardid)->cardID, check_card(cardid)->moneyleft, statustostring[check_card(cardid)->nStatus],
+		    check_card(cardid)->nUseCount, check_card(cardid)->TotalUse, timea);
+		printf("———————————————————————————————————————————————————\n");
+		iflegal = 1;
+	  }
+    } while (!iflegal);
+    printf("0-未上机，1-已上机，2-已注销\n");
+    printf("请输入期望修改状态代码：");
+    do {
+	  iflegal = 0;
+	  scanf("%d", &status);
+	  if (status == -1) {
+		printf("已取消修改\n");
+		system("pause");
+		system("cls");
+		return;
+	  }
+	  else if (status != 0 && status != 1 && status != 2) {
+		printf("输入有误！请重新输入：");
+	  }
+	  else if(check_card(cardid)->nStatus == status) {
+		printf("期望修改状态和原状态一样！请重新输入：");
+	  }
+	  else {
+		iflegal = 1;
+	  }
+    } while (!iflegal);
+    printf("请输入管理员账户密码：");
+    do {
+	  iflegal = 0;
+	  scanf("%s", pas);
+	  if (pas[1] == 0 && pas[0] == 92) {
+		printf("已取消充值\n");
+		system("pause");
+		system("cls");
+		return;
+	  }
+	  else if (check_manager_with_pas(id_of_manager, pas) == NULL) {
+		printf("密码错误！请重新输入：");
+	  }
+	  else {
+		iflegal = 1;
+	  }
+    } while (!iflegal);
+    if (check_card(cardid)->nStatus == 1) {
+	  double money = moneytopay(check_card(cardid)->lastTimeOfUse, time(NULL));
+	  if (money <= check_card(cardid)->moneyleft) {
+		printf("需要支付下机费用%.2lf元，现账户剩余%.2lf元，是否继续？（1/0）：", money, check_card(cardid)->moneyleft);
+		int ans;
+		scanf("%d", &ans);
+		if (ans == 0) {
+		    printf("已取消修改\n");
+		    system("pause");
+		    system("cls");
+		    return;
+		}
+		card* cardnow=check_card_without_free(cardid);
+		cardnow->moneyleft -= money;
+		cardnow->nUseCount += 1;
+		cardnow->nStatus = 0;
+		create_a_billing_record(0, cardid, money, cardnow->lastTimeOfUse, time(NULL), cardnow->moneyleft, id_of_manager);
+		cardnow->lastTimeOfUse = time(NULL);
+		cards_override();
+	  }
+	  else {
+		printf("需要支付下机费用%.2lf元，现账户只剩余%.2lf元，是否清空余额并继续？（1/0）：", money, check_card(cardid)->moneyleft);
+		int ans;
+		scanf("%d", &ans);
+		if (ans == 0) {
+		    printf("已取消修改\n");
+		    system("pause");
+		    system("cls");
+		    return;
+		}
+		card* cardnow = check_card_without_free(cardid);
+		create_a_billing_record(0, cardid, cardnow->moneyleft, cardnow->lastTimeOfUse, time(NULL),0 , id_of_manager);
+		cardnow->moneyleft =0;
+		cardnow->nUseCount += 1;
+		cardnow->lastTimeOfUse = time(NULL);
+		cards_override();
+	  }
+    }
+    if (status == 1) {
+	  card* cardnow = check_card_without_free(cardid);
+	  cardnow->lastTimeOfUse = time(NULL);
+	  cardnow->nStatus = 1;
+	  cards_override();
+    }
+    if (status == 2) {
+	  if (check_card(cardid)->moneyleft > 0) {
+		printf("卡中剩余%.2lf元，注销将清空余额，是否继续？（1/0）：", check_card(cardid)->moneyleft);
+		int ans;
+		scanf("%d", &ans);
+		if (ans == 0) {
+		    printf("已取消修改\n");
+		    system("pause");
+		    system("cls");
+		    return;
+		}
+	  }
+	  card* cardnow = check_card_without_free(cardid);
+	  create_a_billing_record(3, cardid, cardnow->moneyleft = 0, time(NULL), time(NULL), 0, id_of_manager);
+	  cardnow->moneyleft = 0;
+	  cardnow->nStatus = 2;
+	  cards_override();
+    }
+    printf("修改成功！现在%s的状态为“%s”\n", cardid, statustostring[status]);
+    system("pause");
+    system("cls");
 }
