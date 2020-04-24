@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\billing">
+      <UniqueIdentifier>{1ac1ed75-c898-4cb5-ae92-8d7c825b6b50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\card">
+      <UniqueIdentifier>{e631a809-ef5d-4668-998f-fcad06422a69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\billing">
+      <UniqueIdentifier>{75faf0de-6dd5-484a-b990-73ac49ed667a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\card">
+      <UniqueIdentifier>{ca6c41f2-a7f9-47f1-9421-e270ad2969e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\manager">
+      <UniqueIdentifier>{886a46e6-483e-4591-93a8-e59e8ba87060}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\manager">
+      <UniqueIdentifier>{1236f282-6405-483d-9604-3cb42c13e53c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="计费管理系统.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="tool.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="billing_manage.c">
+      <Filter>源文件\billing</Filter>
+    </ClCompile>
+    <ClCompile Include="billing_file.c">
+      <Filter>源文件\billing</Filter>
+    </ClCompile>
+    <ClCompile Include="card_file.c">
+      <Filter>源文件\card</Filter>
+    </ClCompile>
+    <ClCompile Include="card_manage.c">
+      <Filter>源文件\card</Filter>
+    </ClCompile>
+    <ClCompile Include="manager_file.c">
+      <Filter>源文件\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="manager_manage.c">
+      <Filter>源文件\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="interface_manager.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="interface_card.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="model.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="model.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="tool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="billing_file.h">
+      <Filter>头文件\billing</Filter>
+    </ClInclude>
+    <ClInclude Include="billing_manage.h">
+      <Filter>头文件\billing</Filter>
+    </ClInclude>
+    <ClInclude Include="card_file.h">
+      <Filter>头文件\card</Filter>
+    </ClInclude>
+    <ClInclude Include="card_manage.h">
+      <Filter>头文件\card</Filter>
+    </ClInclude>
+    <ClInclude Include="manager_file.h">
+      <Filter>头文件\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="manager_manage.h">
+      <Filter>头文件\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="interface_manager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="计费管理系统.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="interface_card.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
